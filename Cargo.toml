@@ -1,6 +1,6 @@
 [package]
 name = "rem"
-version = "0.1.1"
+version = "0.1.2"
 authors = ["Antoni Boucher <bouanto@zoho.com>"]
 categories = ["parser-implementations"]
 description = "Parser for the remind REM format"

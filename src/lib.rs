@@ -19,13 +19,14 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+use std::cmp::Ordering;
 use std::io::{BufRead, BufReader, Read};
 use std::num::ParseIntError;
 use std::time::Duration;
 
 use Month::*;
 
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq, PartialOrd)]
 pub enum Month {
     January = 0,
     February = 1,
@@ -41,17 +42,58 @@ pub enum Month {
     December = 11,
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct Date {
     pub day: u8,
     pub month: Month,
     pub year: u16,
 }
 
-#[derive(Debug, PartialEq)]
+impl PartialOrd for Date {
+    fn partial_cmp(&self, other: &Date) -> Option<Ordering> {
+        Some(self.cmp(other))
+    }
+}
+
+impl Ord for Date {
+    fn cmp(&self, other: &Date) -> Ordering {
+        if self.year < other.year || (self.year == other.year && self.month < other.month || (self.month == other.month
+            && self.day < other.day)) {
+            Ordering::Less
+        }
+        else if self == other {
+            Ordering::Equal
+        }
+        else {
+            Ordering::Greater
+        }
+    }
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct Time {
     pub hour: u8,
     pub minute: u8,
+}
+
+impl PartialOrd for Time {
+    fn partial_cmp(&self, other: &Time) -> Option<Ordering> {
+        Some(self.cmp(other))
+    }
+}
+
+impl Ord for Time {
+    fn cmp(&self, other: &Time) -> Ordering {
+        if self.hour < other.hour || (self.hour == other.hour && self.minute < other.minute) {
+            Ordering::Less
+        }
+        else if self == other {
+            Ordering::Equal
+        }
+        else {
+            Ordering::Greater
+        }
+    }
 }
 
 #[derive(Debug, PartialEq)]
