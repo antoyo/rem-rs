@@ -25,7 +25,7 @@ use std::time::Duration;
 
 use Month::*;
 
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, PartialEq)]
 pub enum Month {
     January = 0,
     February = 1,
@@ -218,6 +218,8 @@ mod tests {
         assert_eq!(entries[0].msg, "Event name".to_string());
         assert_eq!(entries[0].time, Time { hour: 19, minute: 0 });
         assert_eq!(entries[1].date, Date { day: 9, month: April, year: 2018 });
+        let _month = entries[1].date.month;
+        assert!(entries[1].date.month == April);
         assert_eq!(entries[1].duration, Duration::from_secs(15 * 60));
         assert_eq!(entries[1].msg, "Super Event".to_string());
         assert_eq!(entries[1].time, Time { hour: 12, minute: 50 });
